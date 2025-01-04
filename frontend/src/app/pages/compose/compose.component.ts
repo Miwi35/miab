@@ -48,6 +48,13 @@ export class ComposeComponent implements OnInit, OnDestroy {
           } else if (status.error) {
             this.isConnected = false;
             this.error = status.error;
+            if (status.error === 'Broadcast ended by creator') {
+              this.isBroadcastEnded = true;
+              if (this.timerInterval) {
+                clearInterval(this.timerInterval);
+                this.timerInterval = undefined;
+              }
+            }
           }
         }
       });
@@ -58,48 +65,51 @@ export class ComposeComponent implements OnInit, OnDestroy {
     this.isBroadcastStarted = true;
     this.startTime = performance.now();
     this.recordingService.startRecording(this.broadcastKey);
+    this.broadcastService.startBroadcasting(this.broadcastKey);
     
     // Start timer
     this.timerInterval = window.setInterval(() => {
       this.elapsedTime = Math.floor(performance.now() - this.startTime);
-    }, 10); // Update every 10ms for smooth display
+    }, 10);
   }
 
   getBroadcastStatus(): string {
     if (this.error) return this.error;
     if (!this.isConnected) return 'Connecting...';
-    else if (!this.isBroadcastStarted) return 'Ready to broadcast';
-    else if (this.isBroadcastEnded) return 'Broadcast ended';
+    if (this.isBroadcastEnded) return 'Broadcast ended';
+    if (!this.isBroadcastStarted) return 'Ready to broadcast';
     return `Broadcasting to: miab.local/${this.broadcastKey}`;
   }
 
   onKeystroke(event: KeyboardEvent) {
     if (!this.isConnected || !this.isBroadcastStarted || this.isBroadcastEnded) return;
 
-    // Skip modifier keys and other special keys
-    if (event.code === 'CapsLock' || 
-        event.code === 'Shift' || 
-        event.code === 'Control' || 
-        event.code === 'Alt' || 
-        event.code === 'Meta' || 
-        event.code === 'Tab') {
-      return;
-    }
-
     const timestamp = Math.floor(performance.now() - this.startTime);
     let keyCode: number;
 
     if (event.key.length === 1) {
-      // Get ASCII code for the character
+      // Regular character keys - use charCode
       keyCode = event.key.charCodeAt(0);
     } else {
-      // Special keys
+      // Special keys - use special codes
       switch(event.code) {
         case 'Enter':
           keyCode = 13;
           break;
         case 'Backspace':
           keyCode = 8;
+          break;
+        case 'ArrowLeft':
+          keyCode = 0x1B5B44;  // Special code for left arrow
+          break;
+        case 'ArrowUp':
+          keyCode = 0x1B5B41;  // Special code for up arrow
+          break;
+        case 'ArrowRight':
+          keyCode = 0x1B5B43;  // Special code for right arrow
+          break;
+        case 'ArrowDown':
+          keyCode = 0x1B5B42;  // Special code for down arrow
           break;
         default:
           return; // Ignore other special keys
@@ -121,7 +131,7 @@ export class ComposeComponent implements OnInit, OnDestroy {
       }
       
       this.isBroadcastEnded = true;
-      this.broadcastService.disconnect();
+      this.broadcastService.endBroadcast(this.broadcastKey);
     }
   }
 

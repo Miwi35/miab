@@ -3,6 +3,7 @@ export interface BroadcastSession {
   hashedPassword?: string;
   creatorId: string;
   connectedClients: Set<string>;
+  isStarted: boolean;
 }
 
 export interface KeystrokeData {

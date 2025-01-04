@@ -23,11 +23,12 @@ export class ReplayViewerComponent implements OnInit, OnDestroy {
   replayProgress = 0;
   currentTime = 0;
   totalTime = 0;
+  cursorPosition = 0;
   private replayStartTime = 0;
   private animationFrame?: number;
-  private replayTimeouts: number[] = [];
   private keystrokeEvents: KeystrokeEvent[] = [];
   private isScrubbing = false;
+  private desiredColumn = 0;
 
   ngOnInit() {
     this.parseRecording();
@@ -112,14 +113,78 @@ export class ReplayViewerComponent implements OnInit, OnDestroy {
   }
 
   private processKeystroke(keyCode: number) {
-    if (keyCode === 8) { // Backspace
-      this.replayContent = this.replayContent.slice(0, -1);
+    // Check for special arrow key codes
+    if (keyCode === 0x1B5B44) { // Left Arrow
+      this.cursorPosition = Math.max(0, this.cursorPosition - 1);
+      this.updateDesiredColumn();
+    } else if (keyCode === 0x1B5B43) { // Right Arrow
+      this.cursorPosition = Math.min(this.replayContent.length, this.cursorPosition + 1);
+      this.updateDesiredColumn();
+    } else if (keyCode === 0x1B5B41 || keyCode === 0x1B5B42) { // Up or Down Arrow
+      const lines = this.replayContent.split('\n');
+      let currentLine = 0;
+      let pos = 0;
+      let lineStart = 0;
+      
+      // Find current line and position
+      for (let i = 0; i < lines.length; i++) {
+        if (pos + lines[i].length >= this.cursorPosition) {
+          currentLine = i;
+          lineStart = pos;
+          break;
+        }
+        pos += lines[i].length + 1;
+      }
+
+      // If this is the first vertical movement, store the current column
+      if (this.desiredColumn === 0) {
+        this.desiredColumn = this.cursorPosition - lineStart;
+      }
+
+      // Calculate target line
+      const targetLine = keyCode === 0x1B5B41 ? 
+        Math.max(0, currentLine - 1) : // Up
+        Math.min(lines.length - 1, currentLine + 1); // Down
+
+      // Calculate new position
+      if (targetLine !== currentLine) {
+        // Move to the beginning of the target line
+        pos = 0;
+        for (let i = 0; i < targetLine; i++) {
+          pos += lines[i].length + 1;
+        }
+        
+        // Move to the desired column or end of line
+        const targetLineLength = lines[targetLine].length;
+        const targetColumn = Math.min(this.desiredColumn, targetLineLength);
+        this.cursorPosition = pos + targetColumn;
+      }
+    } else if (keyCode === 8) { // Backspace
+      this.replayContent = 
+        this.replayContent.slice(0, this.cursorPosition - 1) + 
+        this.replayContent.slice(this.cursorPosition);
+      this.cursorPosition = Math.max(0, this.cursorPosition - 1);
+      this.desiredColumn = 0;
     } else if (keyCode === 13) { // Enter
-      this.replayContent += '\n';
+      this.replayContent = 
+        this.replayContent.slice(0, this.cursorPosition) + 
+        '\n' + 
+        this.replayContent.slice(this.cursorPosition);
+      this.cursorPosition++;
+      this.desiredColumn = 0;
     } else {
-      // Convert ASCII code back to character
-      this.replayContent += String.fromCharCode(keyCode);
+      // Regular character
+      this.replayContent = 
+        this.replayContent.slice(0, this.cursorPosition) + 
+        String.fromCharCode(keyCode) + 
+        this.replayContent.slice(this.cursorPosition);
+      this.cursorPosition++;
+      this.desiredColumn = 0;
     }
+  }
+
+  private updateDesiredColumn() {
+    this.desiredColumn = 0;
   }
 
   startScrubbing(event: MouseEvent) {

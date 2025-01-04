@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { CryptoService } from '../../services/crypto.service';
   templateUrl: './broadcast-config.component.html',
   styleUrls: ['./broadcast-config.component.scss']
 })
-export class BroadcastConfigComponent {
+export class BroadcastConfigComponent implements OnInit {
   @Output() configSubmitted = new EventEmitter<BroadcastSession>();
 
   urlPath = '';
@@ -24,13 +24,27 @@ export class BroadcastConfigComponent {
     private cryptoService: CryptoService,
     private broadcastService: BroadcastService,
     private router: Router
-  ) {}
+  ) {
+    console.log('BroadcastConfigComponent constructed');
+  }
+
+  ngOnInit() {
+    console.log('BroadcastConfigComponent initialized');
+    this.validateUrl(); // Ensure initial state is set
+  }
 
   validateUrl() {
+    const previousState = this.isConfigValid;
     this.isConfigValid = this.urlPath.length >= 3 && /^[a-zA-Z0-9-]+$/.test(this.urlPath);
+    console.log('URL validation:', {
+      urlPath: this.urlPath,
+      isConfigValid: this.isConfigValid,
+      previousState
+    });
   }
 
   async onConfirm() {
+    console.log('onConfirm called, isConfigValid:', this.isConfigValid);
     if (!this.isConfigValid) return;
 
     const config: BroadcastSession = {

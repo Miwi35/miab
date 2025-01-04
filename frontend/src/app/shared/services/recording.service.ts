@@ -30,4 +30,8 @@ export class RecordingService {
   getRecording(broadcastKey: string): string | null {
     return localStorage.getItem(this.RECORDING_PREFIX + broadcastKey);
   }
+
+  saveRecording(path: string, content: string): void {
+    localStorage.setItem(this.RECORDING_PREFIX + path, content);
+  }
 } 

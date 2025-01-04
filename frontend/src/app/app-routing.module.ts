@@ -7,7 +7,7 @@ import { ReplayComponent } from './pages/replay/replay.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'compose/:url', component: ComposeComponent },
-  { path: 'replay/:path', component: ReplayComponent },
+  { path: 'replay/:url', component: ReplayComponent },
   { path: ':url', component: WatchComponent },
   { path: '**', redirectTo: '' }
 ]; 

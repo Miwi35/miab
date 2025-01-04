@@ -3,7 +3,9 @@
     <h2>{{ title }}</h2>
   </div>
 
-  <div class="replay-content">{{ replayContent }}</div>
+  <div class="replay-content">
+    {{ replayContent.substring(0, cursorPosition) }}<span class="cursor"></span>{{ replayContent.substring(cursorPosition) }}
+  </div>
 
   <div class="player-controls">
     <div class="controls-row">

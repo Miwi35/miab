@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import { BroadcastSession, KeystrokeData, BroadcastData } from '../types';
+import { BroadcastSession, KeystrokeData, BroadcastData } from '../types/index';
 
 export class BroadcastManager {
   private broadcasts: Map<string, BroadcastSession>;
@@ -20,15 +20,32 @@ export class BroadcastManager {
           url,
           hashedPassword,
           creatorId: socket.id,
-          connectedClients: new Set([socket.id])
+          connectedClients: new Set([socket.id]),
+          isStarted: false
         };
 
         this.broadcasts.set(url, session);
         socket.join(url);
-        socket.emit('broadcast:connected');
+        socket.emit('broadcast:created');
       });
 
-      socket.on('broadcast:join', ({ url, hashedPassword }: Pick<BroadcastSession, 'url' | 'hashedPassword'>) => {
+      socket.on('broadcast:start', ({ url }: { url: string }) => {
+        const session = this.broadcasts.get(url);
+        if (session?.creatorId === socket.id) {
+          session.isStarted = true;
+          io.to(url).emit('broadcast:started');
+        }
+      });
+
+      socket.on('broadcast:end', ({ url }: { url: string }) => {
+        const session = this.broadcasts.get(url);
+        if (session?.creatorId === socket.id) {
+          io.to(url).emit('broadcast:ended');
+          this.broadcasts.delete(url);
+        }
+      });
+
+      socket.on('watcher:join', ({ url, hashedPassword }: Pick<BroadcastSession, 'url' | 'hashedPassword'>) => {
         const session = this.broadcasts.get(url);
 
         if (!session) {
@@ -50,13 +67,24 @@ export class BroadcastManager {
 
         session.connectedClients.add(socket.id);
         socket.join(url);
-        socket.emit('broadcast:connected');
+        socket.emit('watcher:joined');
+        
+        if (session.isStarted) {
+          socket.emit('broadcast:started');
+        }
       });
 
-      socket.on('broadcast:keystroke', (data: { url: string; keystroke: KeystrokeData }) => {
-        const session = this.broadcasts.get(data.url);
+      socket.on('broadcast:keystroke', ({ url, keystroke }: { url: string, keystroke: { keyCode: number, timestamp: number } }) => {
+        console.log('Received keystroke:', { url, keystroke }); // Debug log
+        const session = this.broadcasts.get(url);
         if (session?.connectedClients.has(socket.id)) {
-          socket.to(data.url).emit('broadcast:keystroke', data.keystroke);
+          console.log('Broadcasting keystroke to room:', url); // Debug log
+          socket.to(url).emit('broadcast:keystroke', keystroke);
+        } else {
+          console.log('Session not found or client not in session:', { 
+            sessionExists: !!session, 
+            clientInSession: session?.connectedClients.has(socket.id) 
+          });
         }
       });
 
@@ -67,7 +95,7 @@ export class BroadcastManager {
             
             // If creator disconnects, end the broadcast
             if (session.creatorId === socket.id) {
-              socket.to(url).emit('broadcast:error', 'Broadcast ended');
+              io.to(url).emit('broadcast:ended');
               this.broadcasts.delete(url);
             }
             // If no clients left, clean up

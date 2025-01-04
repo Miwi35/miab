@@ -85,4 +85,26 @@
   .watch-area .content-area {
     padding: 1rem;
   }
+}
+
+.message-content {
+  min-height: 200px;
+  white-space: pre-wrap;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  position: relative;
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: #fff;
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 } 

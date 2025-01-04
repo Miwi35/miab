@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { RecordingService } from '../../services/recording.service';
 
 @Component({
   selector: 'app-recording-loader',
@@ -9,51 +11,33 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./recording-loader.component.scss']
 })
 export class RecordingLoaderComponent {
-  @Output() recordingLoaded = new EventEmitter<string>();
-  isDragging = false;
+  constructor(
+    private router: Router,
+    private recordingService: RecordingService
+  ) {}
 
-  @HostListener('dragover', ['$event'])
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.isDragging = true;
-  }
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
 
-  @HostListener('dragleave', ['$event'])
-  onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.isDragging = false;
-  }
-
-  @HostListener('drop', ['$event'])
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.isDragging = false;
-
-    const files = event.dataTransfer?.files;
-    if (files?.length) {
-      const file = files[0];
-      if (file.name.endsWith('.miab')) {
-        this.readFile(file);
-      }
+    const file = input.files[0];
+    
+    // Check if it's a .miab file
+    if (!file.name.endsWith('.miab')) {
+      console.error('Invalid file type. Please select a .miab file');
+      return;
     }
-  }
 
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file && file.name.endsWith('.miab')) {
-      this.readFile(file);
+    try {
+      const content = await file.text();
+      const path = file.name.slice(0, -5);
+      
+      this.recordingService.saveRecording(path, content);
+
+      // Navigate to /replay/<path>
+      this.router.navigate(['/replay', path]);
+    } catch (error) {
+      console.error('Error reading file:', error);
     }
-  }
-
-  private readFile(file: File) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target?.result as string;
-      this.recordingLoaded.emit(content);
-    };
-    reader.readAsText(file);
   }
 } 

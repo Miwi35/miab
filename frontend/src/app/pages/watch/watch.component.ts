@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PasswordPromptComponent } from '../../shared/components/password-prompt/password-prompt.component';
-import { BroadcastService, ConnectionStatus, KeystrokeData } from '../../shared/services/broadcast.service';
 import { Subscription } from 'rxjs';
+import { BroadcastService, KeystrokeData, ConnectionStatus } from '../../shared/services/broadcast.service';
+import { CryptoService } from '../../shared/services/crypto.service';
+import { PasswordPromptComponent } from '../../shared/components/password-prompt/password-prompt.component';
 
 @Component({
   selector: 'app-watch',
@@ -16,16 +17,19 @@ export class WatchComponent implements OnInit, OnDestroy {
   title = 'Live Broadcast';
   broadcastKey = '';
   currentContent = '';
+  cursorPosition = 0;
   isConnected = false;
   error?: string;
   showPasswordPrompt = false;
+  statusText = 'Connecting...';
   private keystrokesSubscription?: Subscription;
   private connectionSubscription?: Subscription;
 
   constructor(
     private broadcastService: BroadcastService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cryptoService: CryptoService
   ) {}
 
   ngOnInit() {
@@ -35,7 +39,7 @@ export class WatchComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
         return;
       }
-      this.connectToBroadcast();
+      this.joinBroadcast();
     });
 
     // Subscribe to connection status updates
@@ -44,57 +48,115 @@ export class WatchComponent implements OnInit, OnDestroy {
         if (status.connected) {
           this.isConnected = true;
           this.error = undefined;
-        } else if (status.error) {
-          this.error = status.error;
+          this.showPasswordPrompt = false;
+          this.currentContent = '';
+          this.cursorPosition = 0;
+          this.statusText = status.broadcastStarted 
+            ? `Connected to: miab.local/${this.broadcastKey}`
+            : 'Waiting for the broadcast to start...';
+        } else {
+          this.isConnected = false;
           if (status.error === 'Password required') {
+            this.error = status.error;
             this.showPasswordPrompt = true;
+            this.statusText = 'Password required';
+          } else if (status.error === 'Invalid password') {
+            this.error = status.error;
+            this.statusText = 'Invalid password';
+            setTimeout(() => this.showPasswordPrompt = true, 100);
+          } else {
+            this.error = status.error;
+            this.statusText = status.error || 'Connecting...';
           }
         }
       }
     });
 
-    // Subscribe to keystrokes and update content
-    this.keystrokesSubscription = this.broadcastService.getKeystrokes().subscribe(
-      (keystroke: KeystrokeData | null) => {
+    // Subscribe to keystrokes
+    this.keystrokesSubscription = this.broadcastService.getKeystrokes().subscribe({
+      next: (keystroke: KeystrokeData | null) => {
+        console.log('Keystroke received in component:', keystroke); // Debug log
         if (keystroke) {
-          if (keystroke.keyCode === 8) { // Backspace
-            this.currentContent = this.currentContent.slice(0, -1);
-          } else if (keystroke.keyCode === 13) { // Enter
-            this.currentContent += '\n';
-          } else {
-            this.currentContent += String.fromCharCode(keystroke.keyCode);
-          }
+          this.handleKeystroke(keystroke);
         }
       }
-    );
-  }
-
-  private connectToBroadcast() {
-    if (this.broadcastKey) {
-      this.title = `Live Broadcast: ${this.broadcastKey}`;
-      this.broadcastService.joinBroadcast(this.broadcastKey);
-    }
+    });
   }
 
   onPasswordSubmit(password: string) {
     this.showPasswordPrompt = false;
+    const hashedPassword = this.cryptoService.hashPassword(password);
+    this.joinBroadcast(hashedPassword);
+  }
+
+  private joinBroadcast(password?: string) {
     this.broadcastService.joinBroadcast(this.broadcastKey, password);
   }
 
   ngOnDestroy() {
-    this.connectionSubscription?.unsubscribe();
     this.keystrokesSubscription?.unsubscribe();
-    this.broadcastService.disconnect();
-  }
-
-  getBroadcastStatus(): string {
-    if (this.error) return this.error;
-    if (!this.isConnected) return 'Connecting...';
-    return `Connected to: miab.local/${this.broadcastKey}`;
+    this.connectionSubscription?.unsubscribe();
+    this.broadcastService.leaveBroadcast();
   }
 
   leaveBroadcast() {
-    this.broadcastService.disconnect();
+    this.keystrokesSubscription?.unsubscribe();
+    this.connectionSubscription?.unsubscribe();
+    this.broadcastService.leaveBroadcast();
     this.router.navigate(['/']);
+  }
+
+  private handleKeystroke(keystroke: KeystrokeData) {
+    console.log('Processing keystroke:', keystroke); // Debug log
+    const keyCode = keystroke.keyCode;
+    
+    // Check for special arrow key codes
+    if (keyCode === 0x1B5B44) { // Left Arrow
+      this.cursorPosition = Math.max(0, this.cursorPosition - 1);
+    } else if (keyCode === 0x1B5B43) { // Right Arrow
+      this.cursorPosition = Math.min(this.currentContent.length, this.cursorPosition + 1);
+    } else if (keyCode === 0x1B5B41 || keyCode === 0x1B5B42) { // Up or Down Arrow
+      const lines = this.currentContent.split('\n');
+      let currentLine = 0;
+      let pos = 0;
+      
+      for (let i = 0; i < lines.length; i++) {
+        if (pos + lines[i].length >= this.cursorPosition) {
+          currentLine = i;
+          break;
+        }
+        pos += lines[i].length + 1;
+      }
+      
+      if (keyCode === 0x1B5B41) { // Up Arrow
+        if (currentLine > 0) {
+          const targetPos = pos - lines[currentLine - 1].length - 1;
+          this.cursorPosition = Math.max(0, targetPos);
+        }
+      } else { // Down Arrow
+        if (currentLine < lines.length - 1) {
+          const targetPos = pos + lines[currentLine].length + 1;
+          this.cursorPosition = Math.min(this.currentContent.length, targetPos);
+        }
+      }
+    } else if (keyCode === 8) { // Backspace
+      this.currentContent = 
+        this.currentContent.slice(0, this.cursorPosition - 1) + 
+        this.currentContent.slice(this.cursorPosition);
+      this.cursorPosition = Math.max(0, this.cursorPosition - 1);
+    } else if (keyCode === 13) { // Enter
+      this.currentContent = 
+        this.currentContent.slice(0, this.cursorPosition) + 
+        '\n' + 
+        this.currentContent.slice(this.cursorPosition);
+      this.cursorPosition++;
+    } else {
+      // Regular character
+      this.currentContent = 
+        this.currentContent.slice(0, this.cursorPosition) + 
+        String.fromCharCode(keyCode) + 
+        this.currentContent.slice(this.cursorPosition);
+      this.cursorPosition++;
+    }
   }
 } 
