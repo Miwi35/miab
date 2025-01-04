@@ -1,0 +1,51 @@
+<div class="page-container">
+    <main>
+      <div class="hero">
+        <h1>Express. Share. Vanish.</h1>
+        <p class="hero-text">A digital sanctuary for ephemeral thoughts</p>
+      </div>
+
+      <div class="actions-container">
+        <section class="action-card create">
+          <div class="icon-wrapper">✍️</div>
+          <h2>Create</h2>
+          <p>Start a new broadcast</p>
+          <app-broadcast-config
+            (configSubmitted)="onBroadcastConfigSubmit($event)"
+          ></app-broadcast-config>
+        </section>
+
+        <section class="action-card witness">
+          <div class="icon-wrapper">👁️</div>
+          <h2>Witness</h2>
+          <p>Watch thoughts materialize</p>
+          <app-broadcast-access></app-broadcast-access>
+        </section>
+
+        <section class="action-card replay">
+          <div class="icon-wrapper">🎭</div>
+          <h2>Replay</h2>
+          <p>Relive a moment</p>
+          <app-recording-loader></app-recording-loader>
+        </section>
+      </div>
+
+      <div class="features">
+        <div class="feature-card">
+          <span class="feature-icon">🔒</span>
+          <h3>Anonymous</h3>
+          <p>No registration required. Your privacy is our priority.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">⌨️</span>
+          <h3>Keystroke Recording</h3>
+          <p>Capture the essence of your message creation.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌐</span>
+          <h3>Real-time Sharing</h3>
+          <p>Share your thoughts as you type them.</p>
+        </div>
+      </div>
+    </main>
+  </div>

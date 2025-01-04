@@ -1,0 +1,28 @@
+<div class="page-container">
+  <header>
+    <h1>{{ title }}</h1>
+    <p class="broadcast-url">{{ getBroadcastStatus() }}</p>
+  </header>
+
+  <main>
+    <div class="watch-area">
+      <div class="content-area">
+        <div class="message-display" [class.connecting]="!isConnected">
+          {{ isConnected ? currentContent : 'Connecting...' }}
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="leave-btn" (click)="leaveBroadcast()">
+          <span class="icon">🚪</span>
+          Leave Broadcast
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <app-password-prompt
+    *ngIf="showPasswordPrompt"
+    (passwordSubmitted)="onPasswordSubmit($event)"
+  ></app-password-prompt>
+</div> 

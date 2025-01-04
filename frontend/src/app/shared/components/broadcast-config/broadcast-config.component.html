@@ -1,0 +1,44 @@
+<div class="broadcast-config">
+  <h2>Start Broadcasting</h2>
+  
+  <div class="url-input">
+    <label>Broadcast URL</label>
+    <div class="url-field">
+      <span class="prefix">miab.local/</span>
+      <input 
+        type="text" 
+        [(ngModel)]="urlPath"
+        placeholder="your-broadcast-url"
+        (input)="validateUrl()"
+        (keyup.enter)="onConfirm()"
+      >
+    </div>
+  </div>
+
+  <div class="password-section">
+    <label class="checkbox-label">
+      <input 
+        type="checkbox" 
+        [(ngModel)]="usePassword"
+      >
+      Protect with Password
+    </label>
+
+    <input 
+      *ngIf="usePassword"
+      type="password"
+      [(ngModel)]="password"
+      placeholder="Enter password"
+      class="password-input"
+    >
+  </div>
+
+  <button 
+    class="primary-btn" 
+    [disabled]="!isConfigValid"
+    (click)="onConfirm()"
+  >
+    <span class="icon">✏️</span>
+    Start Broadcasting
+  </button>
+</div> 

@@ -1,0 +1,20 @@
+<div class="page-container">
+  <header>
+    <h1>Message Replay</h1>
+    <p class="broadcast-url">{{ title }}</p>
+    <p class="metadata">Recorded on: {{ getFormattedDate() }}</p>
+  </header>
+
+  <main>
+    <app-replay-viewer
+      [title]="title"
+      [recordingData]="recordingData"
+    ></app-replay-viewer>
+
+    <div class="actions">
+      <button class="exit-btn" routerLink="/">
+        Return Home
+      </button>
+    </div>
+  </main>
+</div> 

@@ -1,0 +1,31 @@
+<div class="replay-area">
+  <div class="replay-info">
+    <h2>{{ title }}</h2>
+  </div>
+
+  <div class="replay-content">{{ replayContent }}</div>
+
+  <div class="player-controls">
+    <div class="controls-row">
+      <button class="play-btn" (click)="toggleReplay()">
+        <span class="icon">{{ isPlaying ? '⏸' : '▶' }}</span>
+      </button>
+      
+      <div class="progress-container">
+        <span class="time">{{ formatTime(currentTime) }}</span>
+        
+        <div class="progress-bar" 
+             (mousedown)="startScrubbing($event)"
+             (mousemove)="scrub($event)"
+             (mouseup)="stopScrubbing()"
+             (mouseleave)="stopScrubbing()"
+             #progressBar>
+          <div class="progress" [style.width.%]="replayProgress"></div>
+          <div class="cursor" [style.left.%]="replayProgress"></div>
+        </div>
+        
+        <span class="time remaining">-{{ formatTime(totalTime - currentTime) }}</span>
+      </div>
+    </div>
+  </div>
+</div>
