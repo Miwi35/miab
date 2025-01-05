@@ -1,0 +1,22 @@
+<div class="action-card replay">
+  <div class="header">
+    <h3>Replay</h3>
+    <p>Relive a moment</p>
+  </div>
+  <div class="content">
+    <div class="upload-area">
+      <label for="file-upload" class="upload-button">
+        <span class="icon">📁</span>
+        Upload .miab file
+      </label>
+      <input 
+        type="file" 
+        id="file-upload" 
+        accept=".miab"
+        (change)="onFileSelected($event)"
+        style="display: none;"
+      >
+    </div> 
+  </div>
+</div>
+

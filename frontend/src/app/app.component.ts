@@ -7,17 +7,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, NavBarComponent, FooterComponent],
-  template: `
-    <app-nav-bar></app-nav-bar>
-    <router-outlet></router-outlet>
-    <app-footer></app-footer>
-  `,
-  styles: [`
-    :host {
-      display: block;
-      min-height: 100vh;
-      padding-bottom: 4rem; /* Make room for footer */
-    }
-  `]
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {}

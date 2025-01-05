@@ -1,0 +1,38 @@
+@use './variables' as v;
+@use '../themes/dark' as theme;
+@use 'sass:map';
+
+body {
+  font-family: v.$font-primary;
+  font-size: v.$font-size-base;
+  line-height: 1.6;
+  color: map.get(theme.$theme, 'text-primary');
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: v.$font-primary;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: v.$spacing-sm;
+}
+
+h1 {
+  font-size: v.$font-size-3xl;
+  background: map.get(theme.$theme, 'gradient-text');
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 { font-size: v.$font-size-2xl; }
+h3 { font-size: v.$font-size-xl; }
+h4 { font-size: v.$font-size-lg; }
+
+.text-gradient {
+  background: map.get(theme.$theme, 'gradient-text');
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-mono {
+  font-family: v.$font-mono;
+} 

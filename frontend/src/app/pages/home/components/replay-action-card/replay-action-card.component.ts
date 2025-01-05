@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { RecordingService } from '../../services/recording.service';
+import { RecordingService } from '../../../../shared/services/recording.service';
 
 @Component({
-  selector: 'app-recording-loader',
+  selector: 'app-replay-action-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './recording-loader.component.html',
-  styleUrls: ['./recording-loader.component.scss']
+  templateUrl: './replay-action-card.component.html',
+  styleUrls: ['./replay-action-card.component.scss']
 })
-export class RecordingLoaderComponent {
+
+export class ReplayActionCardComponent {
   constructor(
     private router: Router,
     private recordingService: RecordingService

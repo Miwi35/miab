@@ -1,0 +1,28 @@
+<main class="record-area">
+  <div class="content-area">
+    <textarea
+      class="message-input"
+      placeholder="Your message will appear here as you type..."
+      [disabled]="!isStarted"
+      (keydown)="onKeystroke($event)"
+    ></textarea>
+  </div>
+
+  <div class="record-controls">
+    <button 
+      class="record-btn" 
+      [class.recording]="isStarted"
+      [disabled]="isDisabled"
+      (click)="onStart()"
+      *ngIf="!isStarted; else stopButton"
+    >
+      <span class="record-icon"></span>
+    </button>
+    <ng-template #stopButton>
+      <button class="stop-btn" (click)="onEnd()">
+        <span class="stop-icon"></span>
+      </button>
+    </ng-template>
+    <span class="timer">{{ formatTime(elapsedTime) }}</span>
+  </div>
+</main> 

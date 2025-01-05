@@ -1,0 +1,47 @@
+@use '../../../../shared/styles/base/_variables' as v;
+@use '../../../../shared/styles/components/buttons';
+@use 'sass:color';
+
+.action-card.record {
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+
+    .record-btn {
+      @extend .btn-base;
+      background: v.$gradient-primary;
+      color: v.$text-primary;
+      padding: v.$spacing-sm v.$spacing-lg;
+      font-size: v.$font-size-base;
+      display: flex;
+      align-items: center;
+      gap: v.$spacing-sm;
+      
+      .record-icon {
+        width: 12px;
+        height: 12px;
+        background-color: #ff4444;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: v.$shadow-md;
+        background: color.adjust(v.$success-color, $lightness: -10%);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+    }
+  }
+  
+  &:hover {
+    border-color: v.$border-hover;
+  }
+} 

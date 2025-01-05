@@ -1,0 +1,129 @@
+@use '../base/variables' as v;
+@use '../themes/dark' as theme;
+@use 'sass:color';
+@use 'sass:map';
+
+// Base Input Styles
+.input-base {
+  border: 1px solid map.get(theme.$theme, 'border-color');
+  background: map.get(theme.$theme, 'bg-input');
+  color: map.get(theme.$theme, 'text-primary');
+  font-family: v.$font-primary;
+  border-radius: v.$border-radius-md;
+  padding: v.$spacing-sm;
+  width: 100%;
+  transition: v.$transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: color.adjust(v.$primary-color, $alpha: 0.5);
+    box-shadow: 0 0 0 2px color.adjust(v.$primary-color, $alpha: 0.2);
+  }
+
+  &::placeholder {
+    color: map.get(theme.$theme, 'text-muted');
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Text Input
+.text-input {
+  @extend .input-base;
+  font-size: v.$font-size-base;
+}
+
+// Textarea Input
+.textarea-input {
+  @extend .input-base;
+  min-height: 300px;
+  resize: vertical;
+  line-height: 1.6;
+  font-family: v.$font-mono;
+  background: color.adjust(map.get(theme.$theme, 'bg-secondary'), $alpha: 0.2);
+}
+
+// URL Input with Prefix
+.url-input {
+  @extend .input-base;
+  display: flex;
+  align-items: center;
+  padding: v.$spacing-xs;
+  background: color.adjust(map.get(theme.$theme, 'bg-secondary'), $alpha: 0.2);
+
+  .prefix {
+    color: map.get(theme.$theme, 'text-secondary');
+    padding: v.$spacing-xs;
+    background: color.adjust(map.get(theme.$theme, 'bg-secondary'), $alpha: 0.3);
+    border-radius: v.$border-radius-sm;
+    margin-right: v.$spacing-xs;
+    font-family: v.$font-mono;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: v.$spacing-xs;
+    font-size: v.$font-size-base;
+    color: map.get(theme.$theme, 'text-primary');
+    font-family: v.$font-primary;
+
+    &::placeholder {
+      color: map.get(theme.$theme, 'text-muted');
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// Message Input
+.message-input {
+  @extend .textarea-input;
+  width: 100%;
+  min-height: 200px;
+  background: color.adjust(map.get(theme.$theme, 'bg-secondary'), $alpha: 0.2);
+  font-family: v.$font-primary;
+}
+
+// Input Sizes
+.input-sm {
+  padding: v.$spacing-xs;
+  font-size: v.$font-size-sm;
+}
+
+.input-lg {
+  padding: v.$spacing-md;
+  font-size: v.$font-size-lg;
+}
+
+// Input Container
+.input-container {
+  width: 100%;
+  max-width: v.$content-max-width;
+  margin-bottom: v.$spacing-sm;
+}
+
+// Input States
+.input-error {
+  border-color: v.$error-color;
+  
+  &:focus {
+    border-color: color.adjust(v.$error-color, $alpha: 0.5);
+    box-shadow: 0 0 0 2px color.adjust(v.$error-color, $alpha: 0.2);
+  }
+}
+
+.input-success {
+  border-color: v.$success-color;
+  
+  &:focus {
+    border-color: color.adjust(v.$success-color, $alpha: 0.5);
+    box-shadow: 0 0 0 2px color.adjust(v.$success-color, $alpha: 0.2);
+  }
+} 

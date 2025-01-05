@@ -1,0 +1,33 @@
+<div class="action-card join">
+  <div class="header">
+    <h3>Join</h3>
+    <p>Watch thoughts materialize</p>
+  </div>
+  <div class="content">
+    <form (submit)="onSubmit()">
+      <div class="url-input-container">
+        <div class="url-field">
+          <span class="prefix">miab.local/watch/</span>
+          <input 
+            type="text" 
+            class="path-input"
+            placeholder="broadcast-url"
+            [value]="urlPath"
+            (input)="onUrlPathChange($event)"
+          >
+        </div>
+      </div>
+
+      <div class="actions">
+        <button 
+          type="submit" 
+          class="join-btn"
+          [disabled]="!isUrlValid"
+        >
+          <span class="icon">👀</span>
+          Join Broadcast
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

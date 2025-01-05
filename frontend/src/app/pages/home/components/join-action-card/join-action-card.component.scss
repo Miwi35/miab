@@ -1,0 +1,90 @@
+@use '../../../../shared/styles/base/_variables' as v;
+@use '../../../../shared/styles/components/buttons';
+@use 'sass:color';
+
+.action-card.join {
+  form {
+    width: 100%;
+
+  .url-input-container {
+    margin-bottom: v.$spacing-lg;
+
+    .url-field {
+      display: flex;
+      align-items: center;
+      background: color.adjust(v.$bg-secondary, $alpha: 0.2);
+      border: 1px solid v.$border-color;
+      border-radius: v.$border-radius-md;
+      padding: v.$spacing-xs;
+      transition: v.$transition-fast;
+
+      &:focus-within {
+        border-color: color.adjust(v.$primary-color, $alpha: 0.5);
+        box-shadow: 0 0 0 2px color.adjust(v.$primary-color, $alpha: 0.2);
+      }
+
+      .prefix {
+        color: v.$text-secondary;
+        padding: v.$spacing-xs v.$spacing-sm;
+        background: color.adjust(v.$text-primary, $alpha: 0.1);
+        border-radius: v.$border-radius-sm;
+        margin-right: v.$spacing-xs;
+        font-family: v.$font-mono;
+        font-size: v.$font-size-sm;
+      }
+
+      .path-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: v.$spacing-xs;
+        color: v.$text-primary;
+        font-family: v.$font-mono;
+        font-size: v.$font-size-base;
+
+        &:focus {
+          outline: none;
+        }
+
+        &::placeholder {
+          color: v.$text-muted;
+        }
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+
+    .join-btn {
+      display: flex;
+      align-items: center;
+      gap: v.$spacing-xs;
+      padding: v.$spacing-sm v.$spacing-lg;
+      background: v.$gradient-primary;
+      color: v.$text-primary;
+      border: none;
+      border-radius: v.$border-radius-md;
+      font-size: v.$font-size-base;
+      cursor: pointer;
+      transition: v.$transition-fast;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: v.$shadow-md;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .icon {
+        font-size: v.$font-size-lg;
+      }
+    }
+    }
+  }
+}

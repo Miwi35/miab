@@ -1,0 +1,26 @@
+@use '../base/variables' as v;
+@use 'sass:map';
+
+.grid {
+  display: grid;
+  gap: v.$spacing-md;
+  
+  &-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  &-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  &-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  
+  @media (max-width: v.$breakpoint-md) {
+    &-cols-2, &-cols-3, &-cols-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.grid-area {
+  display: grid;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-md;
+  background: map.get(theme.$theme, 'bg-card');
+  border-radius: v.$border-radius-lg;
+  border: 1px solid map.get(theme.$theme, 'border-color');
+} 

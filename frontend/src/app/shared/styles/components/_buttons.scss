@@ -1,0 +1,80 @@
+@use '../base/variables' as v;
+@use '../themes/dark' as theme;
+@use 'sass:color';
+@use 'sass:map';
+
+// Base Button
+.btn-base {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-xs;
+  padding: v.$spacing-sm v.$spacing-md;
+  border: none;
+  border-radius: v.$border-radius-md;
+  font-size: v.$font-size-base;
+  font-weight: 500;
+  cursor: pointer;
+  transition: v.$transition-fast;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .icon {
+    font-size: 1.2em;
+  }
+}
+
+// Primary Button
+.btn-primary {
+  @extend .btn-base;
+  background: map.get(theme.$theme, 'gradient-primary');
+  color: map.get(theme.$theme, 'text-primary');
+  
+  &:hover {
+    background-color: color.adjust(v.$primary-color, $lightness: -10%);
+  }
+}
+
+// Success Button
+.btn-success {
+  @extend .btn-base;
+  background: map.get(theme.$theme, 'gradient-success');
+  color: map.get(theme.$theme, 'text-primary');
+  
+  &:hover {
+    background-color: color.adjust(v.$success-color, $lightness: -10%);
+  }
+}
+
+// Danger Button
+.btn-danger {
+  @extend .btn-base;
+  background-color: v.$error-color;
+  color: map.get(theme.$theme, 'text-primary');
+  
+  &:hover {
+    background-color: color.adjust(v.$error-color, $lightness: -10%);
+  }
+}
+
+// Button Sizes
+.btn-sm {
+  padding: v.$spacing-xs v.$spacing-sm;
+  font-size: v.$font-size-sm;
+}
+
+.btn-lg {
+  padding: v.$spacing-md v.$spacing-lg;
+  font-size: v.$font-size-lg;
+}
+
+// Icon Button
+.btn-icon {
+  @extend .btn-base;
+  padding: v.$spacing-xs;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  justify-content: center;
+} 

@@ -1,0 +1,46 @@
+<div class="page-container">
+    <header>
+      <h1>{{ title }}</h1>
+      <p class="status">{{ getBroadcastStatus() }}</p>
+    </header>
+
+    <div class="settings-section">
+      <div class="toggle-container">
+        <label class="toggle-label">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="isRecordingEnabled"
+            [disabled]="isBroadcastStarted"
+          >
+          <span class="toggle-switch"></span>
+          <span class="label-text">Enable Recording</span>
+        </label>
+        <span class="info-text" *ngIf="!isBroadcastStarted">Recording allows you to save and replay this broadcast later</span>
+      </div>
+    </div>
+
+    <main>
+      <div class="broadcast-area" *ngIf="!isBroadcastEnded">
+        <app-recorder
+          [recordingKey]="broadcastKey"
+          [isDisabled]="!isConnected"
+          [shouldRecord]="isRecordingEnabled"
+          (keystroke)="onKeystroke($event)"
+          (recordingEnded)="onRecordingEnded()"
+          (recordingStarted)="startBroadcast()"
+        ></app-recorder>
+      </div>
+
+      <div class="replay-area" *ngIf="isBroadcastEnded && isRecordingEnabled">
+        <app-replay-viewer
+          [title]="broadcastKey"
+        ></app-replay-viewer>
+        <div class="actions">
+          <button class="download-btn" (click)="downloadRecording()">
+            <span class="icon">💾</span>
+            Download Recording
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>

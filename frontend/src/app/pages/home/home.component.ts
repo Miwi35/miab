@@ -1,25 +1,31 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BroadcastConfigComponent } from '../../shared/components/broadcast-config/broadcast-config.component';
-import { BroadcastAccessComponent } from '../../shared/components/broadcast-access/broadcast-access.component';
-import { RecordingLoaderComponent } from '../../shared/components/recording-loader/recording-loader.component';
-import { BroadcastSession } from '../../shared/services/broadcast.service';
+import { BroadcastActionCardComponent } from './components/broadcast-action-card/broadcast-action-card.component';
+import { JoinActionCardComponent } from './components/join-action-card/join-action-card.component';
+import { RecordActionCardComponent } from './components/record-action-card/record-action-card.component';
+import { ReplayActionCardComponent } from './components/replay-action-card/replay-action-card.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, BroadcastConfigComponent, BroadcastAccessComponent, RecordingLoaderComponent],
+  imports: [CommonModule, BroadcastActionCardComponent, JoinActionCardComponent, RecordActionCardComponent, ReplayActionCardComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  constructor(private router: Router) {}
+
   onBroadcastConfigSubmit(event: any) {
     // ... existing code ...
   }
 
   onFileSelected(event: Event) {
     // Handle file selection
+  }
+
+  navigateToRecord() {
+    this.router.navigate(['/record']);
   }
 }
 

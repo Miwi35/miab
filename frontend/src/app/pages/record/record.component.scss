@@ -1,0 +1,186 @@
+@use '../../shared/styles/base/_variables' as v;
+@use '../../shared/styles/components/inputs';
+@use 'sass:color';
+
+.record-status {
+  color: v.$text-secondary;
+  font-size: v.$font-size-lg;
+  margin: v.$spacing-xs 0;
+}
+
+.record-area {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  width: 100%;
+  max-width: v.$content-max-width;
+  margin: 0 auto;
+}
+
+.start-record {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.start-btn {
+  font-size: v.$font-size-lg;
+  padding: v.$spacing-sm v.$spacing-lg;
+  border-radius: v.$border-radius-md;
+  border: none;
+  background-color: v.$success-color;
+  color: v.$text-primary;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-xs;
+  transition: v.$transition-fast;
+
+  &:hover {
+    background-color: color.adjust(v.$success-color, $lightness: -10%);
+  }
+}
+
+.content-area {
+  width: 100%;
+}
+
+.message-input {
+  width: 100%;
+  min-height: 200px;
+  padding: v.$spacing-sm;
+  border: 1px solid v.$border-color;
+  border-radius: v.$border-radius-sm;
+  font-size: v.$font-size-base;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: v.$spacing-md;
+}
+
+.record-controls {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+}
+
+.stop-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+}
+
+.timer {
+  font-family: monospace;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-xs;
+  padding: v.$spacing-sm v.$spacing-md;
+  background-color: v.$primary-color;
+  color: v.$text-primary;
+  border: none;
+  border-radius: v.$border-radius-sm;
+  cursor: pointer;
+  font-size: v.$font-size-base;
+  transition: v.$transition-fast;
+
+  &:hover {
+    background-color: color.adjust(v.$primary-color, $lightness: -10%);
+  }
+
+  .icon {
+    font-size: v.$font-size-lg;
+  }
+}
+
+.icon {
+  font-size: 1.2em;
+}
+
+header {
+  text-align: center;
+  margin-bottom: v.$spacing-xl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    font-size: v.$font-size-2xl;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  .status {
+    font-size: v.$font-size-base;
+    color: v.$text-secondary;
+    margin-bottom: v.$spacing-md;
+  }
+}
+
+.title-input-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: v.$spacing-md;
+  
+  .title-input {
+    width: 100%;
+    max-width: 400px;
+    padding: v.$spacing-sm v.$spacing-md;
+    border: 1px solid v.$border-color;
+    border-radius: v.$border-radius-md;
+    background: color.adjust(v.$bg-card, $lightness: -2%);
+    color: v.$text-primary;
+    font-size: v.$font-size-lg;
+    text-align: center;
+    
+    &:focus {
+      outline: none;
+      border-color: v.$primary-color;
+    }
+    
+    &::placeholder {
+      color: v.$text-secondary;
+    }
+  }
+}
+
+.title-display {
+  margin-top: v.$spacing-md;
+  text-align: center;
+  
+  .recording-title {
+    font-size: v.$font-size-lg;
+    color: v.$text-primary;
+    font-weight: 500;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-xl;
+  max-width: v.$content-max-width;
+  margin: 0 auto;
+  width: 100%;
+} 

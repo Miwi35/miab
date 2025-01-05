@@ -9,11 +9,10 @@ import { RecordingService } from '../../shared/services/recording.service';
   standalone: true,
   imports: [CommonModule, RouterLink, ReplayViewerComponent],
   templateUrl: './replay.component.html',
-  styleUrls: ['../../shared/styles/container.scss', './replay.component.scss']
+  styleUrls: ['../../shared/styles/layout/_container.scss', './replay.component.scss']
 })
 export class ReplayComponent implements OnInit {
   title = '';
-  recordingData = '';
 
   constructor(
     private router: Router,
@@ -24,21 +23,18 @@ export class ReplayComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       const path = params['url'];
-      console.log('Path:', path);
       if (!path) {
         this.router.navigate(['/']);
         return;
       }
 
-      const recordingData = this.recordingService.getRecording(path);
-      if (!recordingData) {
+      if (!this.recordingService.getRecording(path)) {
         console.error('Recording not found');
         this.router.navigate(['/']);
         return;
       }
 
-      this.recordingData = recordingData;
-      this.title = `${path}`;
+      this.title = path;
     });
   }
 } 

@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RecordingService } from '../../services/recording.service';
 
 interface KeystrokeEvent {
   timestamp: number;
@@ -15,7 +16,6 @@ interface KeystrokeEvent {
 })
 export class ReplayViewerComponent implements OnInit, OnDestroy {
   @Input() title: string = '';
-  @Input() recordingData: string = '';
   @ViewChild('progressBar') progressBar!: ElementRef;
 
   replayContent = '';
@@ -30,22 +30,23 @@ export class ReplayViewerComponent implements OnInit, OnDestroy {
   private isScrubbing = false;
   private desiredColumn = 0;
 
+  constructor(private recordingService: RecordingService) {}
+
   ngOnInit() {
     this.parseRecording();
   }
 
   private parseRecording() {
-    if (!this.recordingData) return;
+    const recordingData = this.recordingService.getRecording(this.title);
+    if (!recordingData) return;
     
-    const events = this.recordingData.split('|');
+    const events = recordingData.split('|');
     let currentIndex = 0;
     
-    // Skip 'start' event
     if (events[0] === 'start') {
       currentIndex = 1;
     }
 
-    // Parse all events except the last one (which should be 'end')
     while (currentIndex < events.length - 1) {
       const [timestamp, keyCode] = events[currentIndex].split(':');
       this.keystrokeEvents.push({
@@ -55,7 +56,6 @@ export class ReplayViewerComponent implements OnInit, OnDestroy {
       currentIndex++;
     }
 
-    // Get total time from the end event
     const lastEvent = events[events.length - 1];
     if (lastEvent.endsWith('end')) {
       const [timestamp] = lastEvent.split(':');

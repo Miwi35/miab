@@ -1,0 +1,66 @@
+@use 'sass:color';
+
+// Colors
+$primary-color: #3b82f6;
+$secondary-color: #64748b;
+$success-color: #22c55e;
+$error-color: #f44336;
+$warning-color: #f59e0b;
+
+// Text Colors
+$text-primary: #f8fafc;
+$text-secondary: #94a3b8;
+$text-muted: #64748b;
+
+// Background Colors
+$bg-primary: #0f172a;
+$bg-secondary: #1e293b;
+$bg-card: rgba(255, 255, 255, 0.03);
+
+// Border Colors
+$border-color: rgba(255, 255, 255, 0.05);
+$border-hover: rgba(255, 255, 255, 0.1);
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, #3b82f6, #2563eb);
+$gradient-success: linear-gradient(135deg, #22c55e, #16a34a);
+$gradient-background: linear-gradient(135deg, #0f172a, #1e293b);
+
+// Typography
+$font-primary: 'Inter', sans-serif;
+$font-mono: monospace;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.2rem;
+$font-size-xl: 1.5rem;
+$font-size-2xl: 2rem;
+$font-size-3xl: 3.5rem;
+$font-size-4xl: 4rem;
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$spacing-xl: 2.5rem;
+$spacing-2xl: 4rem;
+$spacing-3xl: 6rem;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-full: 9999px;
+$border-radius-xl: 16px;
+
+// Transitions
+$transition-base: all 0.3s ease;
+$transition-fast: all 0.2s ease;
+
+// Layout
+$container-max-width: 1200px;
+$content-max-width: 800px;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);

@@ -1,0 +1,38 @@
+@use '../../../../shared/styles/base/_variables' as v;
+@use 'sass:color';
+
+.action-card.replay {
+.upload-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  border: 2px dashed color.adjust(v.$text-primary, $alpha: 0.1);
+  border-radius: v.$border-radius-lg;
+  padding: v.$spacing-lg;
+}
+
+.upload-button {
+  background: v.$gradient-primary;
+  color: v.$text-primary;
+  border: none;
+  padding: v.$spacing-sm v.$spacing-lg;
+  border-radius: v.$border-radius-lg;
+  font-size: v.$font-size-lg;
+  cursor: pointer;
+  transition: v.$transition-base;
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+  font-family: v.$font-primary;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: color.adjust(v.$primary-color, $alpha: 0.2);
+  }
+
+    .icon {
+      font-size: v.$font-size-xl;
+    }
+  }
+}

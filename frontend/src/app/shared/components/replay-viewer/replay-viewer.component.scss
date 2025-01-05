@@ -1,3 +1,6 @@
+@use '../../../shared/styles/base/_variables' as v;
+@use 'sass:color';
+
 .replay-area {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
@@ -57,21 +60,21 @@
       gap: 1rem;
 
       .play-btn {
-        background: #3b82f6;
+        background: v.$primary-color;
         border: none;
         width: 36px;
         height: 36px;
-        border-radius: 50%;
+        border-radius: v.$border-radius-full;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: all 0.2s ease;
-        color: white;
-        font-size: 1.2rem;
+        transition: v.$transition-fast;
+        color: v.$text-primary;
+        font-size: v.$font-size-lg;
 
         &:hover {
-          background: #2563eb;
+          background: color.adjust(v.$primary-color, $lightness: -10%);
           transform: scale(1.05);
         }
       }
@@ -80,23 +83,23 @@
         flex: 1;
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: v.$spacing-sm;
 
         .time {
-          font-family: monospace;
-          color: #94a3b8;
+          font-family: v.$font-mono;
+          color: v.$text-secondary;
           font-size: 0.9rem;
           min-width: 65px;
           
           &.remaining {
-            color: #64748b;
+            color: v.$text-muted;
           }
         }
 
         .progress-bar {
           flex: 1;
           height: 4px;
-          background: rgba(255, 255, 255, 0.1);
+          background: color.adjust(v.$text-primary, $alpha: 0.1);
           border-radius: 2px;
           position: relative;
           cursor: pointer;

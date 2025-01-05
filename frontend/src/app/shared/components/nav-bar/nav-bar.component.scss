@@ -1,7 +1,12 @@
+@use '../../styles/base/variables' as v;
+@use '../../styles/themes/dark' as theme;
+@use 'sass:color';
+@use 'sass:map';
+
 .nav-bar {
-  background: rgba(15, 23, 42, 0.95);
+  background: color.adjust(v.$bg-primary, $alpha: 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid v.$border-color;
   position: fixed;
   top: 0;
   left: 0;
@@ -9,34 +14,34 @@
   z-index: 1000;
   
   .nav-content {
-    max-width: 1200px;
+    max-width: v.$container-max-width;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: v.$spacing-sm v.$spacing-lg;
     display: flex;
     align-items: center;
   }
 
   .brand {
-    color: #f8fafc;
+    color: v.$text-primary;
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: v.$spacing-sm;
 
     .icon {
-      font-size: 2rem;
+      font-size: v.$font-size-2xl;
     }
 
     .brand-text {
       .title {
-        font-size: 1.5rem;
+        font-size: v.$font-size-xl;
         font-weight: 700;
         letter-spacing: -0.02em;
       }
 
       .baseline {
         font-size: 0.9rem;
-        color: #94a3b8;
+        color: v.$text-secondary;
         margin-top: 0.2rem;
       }
     }
@@ -58,28 +63,7 @@
 @media (max-width: 640px) {
   .nav-bar {
     .nav-content {
-      padding: 1rem;
-    }
-
-    .brand {
-      gap: 0.5rem;
-      
-      .icon {
-        font-size: 1.4rem;
-      }
-
-      .brand-text .title {
-        font-size: 1rem;
-      }
-    }
-
-    .nav-links {
-      gap: 0.75rem;
-      
-      a {
-        font-size: 0.9rem;
-        padding: 0.4rem 0.6rem;
-      }
+      padding: v.$spacing-sm;
     }
   }
-} 
+}

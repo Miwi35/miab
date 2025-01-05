@@ -4,14 +4,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BroadcastService, KeystrokeData, ConnectionStatus } from '../../shared/services/broadcast.service';
 import { CryptoService } from '../../shared/services/crypto.service';
-import { PasswordPromptComponent } from '../../shared/components/password-prompt/password-prompt.component';
+import { PasswordPromptComponent } from './components/password-prompt/password-prompt.component';
 
 @Component({
   selector: 'app-watch',
   standalone: true,
   imports: [CommonModule, PasswordPromptComponent],
   templateUrl: './watch.component.html',
-  styleUrls: ['../../shared/styles/container.scss', './watch.component.scss']
+  styleUrls: ['../../shared/styles/layout/_container.scss', './watch.component.scss']
 })
 export class WatchComponent implements OnInit, OnDestroy {
   title = 'Live Broadcast';
@@ -52,7 +52,7 @@ export class WatchComponent implements OnInit, OnDestroy {
           this.currentContent = '';
           this.cursorPosition = 0;
           this.statusText = status.broadcastStarted 
-            ? `Connected to: miab.local/${this.broadcastKey}`
+            ? `Connected to: miab.local/watch/${this.broadcastKey}`
             : 'Waiting for the broadcast to start...';
         } else {
           this.isConnected = false;

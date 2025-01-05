@@ -1,3 +1,6 @@
+@use '../../shared/styles/base/_variables' as v;
+@use 'sass:color';
+
 .page-container {
 
   header {
@@ -48,24 +51,24 @@
       justify-content: center;
 
       .leave-btn {
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.2);
-        padding: 0.8rem 1.5rem;
-        border-radius: 8px;
-        font-size: 1rem;
+        background: color.adjust(v.$error-color, $alpha: 0.1);
+        color: v.$error-color;
+        border: 1px solid color.adjust(v.$error-color, $alpha: 0.2);
+        padding: v.$spacing-sm v.$spacing-md;
+        border-radius: v.$border-radius-md;
+        font-size: v.$font-size-base;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: v.$transition-base;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: v.$spacing-xs;
 
         .icon {
-          font-size: 1.2rem;
+          font-size: v.$font-size-lg;
         }
 
         &:hover {
-          background: rgba(239, 68, 68, 0.15);
+          background: color.adjust(v.$error-color, $alpha: 0.15);
           transform: translateY(-1px);
         }
 
@@ -79,18 +82,18 @@
 
 @media (max-width: 768px) {
   .page-container {
-    padding: 1rem;
+    padding: v.$spacing-sm;
   }
 
   .watch-area .content-area {
-    padding: 1rem;
+    padding: v.$spacing-sm;
   }
 }
 
 .message-content {
   min-height: 200px;
   white-space: pre-wrap;
-  font-family: 'Inter', sans-serif;
+  font-family: v.$font-primary;
   line-height: 1.6;
   position: relative;
 
@@ -98,7 +101,7 @@
     display: inline-block;
     width: 2px;
     height: 1.2em;
-    background-color: #fff;
+    background-color: v.$text-primary;
     vertical-align: text-bottom;
     animation: blink 1s step-end infinite;
   }

@@ -1,0 +1,55 @@
+
+<div class="action-card broadcast">
+  <div class="header">
+    <h3>Broadcast</h3>
+    <p>Share your thoughts</p>
+  </div>
+  <div class="content">
+  <form (submit)="onConfirm($event)">
+    <div class="url-input-container">
+      <div class="url-field">
+        <span class="prefix">miab.local/broadcast/</span>
+        <input 
+          type="text" 
+          class="path-input"
+          placeholder="your-broadcast-url"
+          [value]="urlPath"
+          (input)="onTitleChange($event)"
+        >
+      </div>
+    </div>
+
+    <div class="privacy-settings">
+      <label class="toggle-container">
+        <input 
+          type="checkbox"
+          [(ngModel)]="usePassword"
+          name="usePassword"
+        >
+        <span class="label-text">Private Broadcast</span>
+      </label>
+
+      <div class="password-input" *ngIf="usePassword">
+        <input 
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Enter broadcast password"
+          (input)="validateConfig()"
+        >
+      </div>
+    </div>
+
+    <div class="actions">
+      <button 
+        type="submit" 
+        class="start-btn"
+        [disabled]="!isConfigValid"
+      >
+        <span class="icon">🎙️</span>
+        Start Broadcasting
+      </button>
+    </div>
+  </form>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+@use '../../../shared/styles/base/_variables' as v;
+@use '../../../shared/styles/components/inputs';
+@use 'sass:color';
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: v.$spacing-lg;
+}
+
+header {
+  text-align: center;
+  margin-bottom: v.$spacing-lg;
+
+  h1 {
+    font-size: v.$font-size-2xl;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  .status {
+    font-size: v.$font-size-base;
+    color: v.$text-secondary;
+  }
+}
+
+.record-area {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-lg;
+  max-width: v.$content-max-width;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content-area {
+  .message-input {
+    width: 100%;
+    min-height: 300px;
+    padding: v.$spacing-lg;
+    border: 1px solid v.$border-color;
+    border-radius: v.$border-radius-md;
+    font-family: v.$font-mono;
+    font-size: v.$font-size-base;
+    resize: vertical;
+    background: color.adjust(v.$bg-card, $lightness: -2%);
+    color: v.$text-primary;
+    
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.record-controls {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-md;
+  justify-content: center;
+}
+
+.record-btn, .stop-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: v.$transition-fast;
+  background: v.$error-color;
+}
+
+.record-btn {
+  .record-icon {
+    width: 16px;
+    height: 16px;
+    background: v.$text-primary;
+    border-radius: 50%;
+  }
+}
+
+.stop-btn {
+  .stop-icon {
+    width: 14px;
+    height: 14px;
+    background: v.$text-primary;
+  }
+}
+
+.timer {
+  font-family: v.$font-mono;
+  font-size: v.$font-size-xl;
+  color: v.$text-secondary;
+  min-width: 80px;
+}
+
+.title-input-container {
+  margin-top: v.$spacing-md;
+  
+  .title-input {
+    width: 100%;
+    max-width: 400px;
+    padding: v.$spacing-sm v.$spacing-md;
+    border: 1px solid v.$border-color;
+    border-radius: v.$border-radius-md;
+    background: color.adjust(v.$bg-card, $lightness: -2%);
+    color: v.$text-primary;
+    font-size: v.$font-size-lg;
+    text-align: center;
+    
+    &:focus {
+      outline: none;
+      border-color: v.$primary-color;
+    }
+    
+    &::placeholder {
+      color: v.$text-secondary;
+    }
+  }
+} 

@@ -1,0 +1,24 @@
+@use './shared/styles/base/_variables' as v;
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: v.$gradient-background;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 5rem; /* Space for fixed navbar */
+  padding-bottom: 4rem; /* Space for fixed footer */
+  width: 100%;
+  max-width: v.$container-max-width;
+  margin: 0 auto;
+  padding-left: v.$spacing-lg;
+  padding-right: v.$spacing-lg;
+
+  @media (max-width: 640px) {
+    padding-left: v.$spacing-sm;
+    padding-right: v.$spacing-sm;
+  }
+}

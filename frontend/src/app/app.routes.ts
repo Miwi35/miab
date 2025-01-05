@@ -7,12 +7,24 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
   },
   {
-    path: 'compose/:url',
-    loadComponent: () => import('./pages/compose/compose.component').then(m => m.ComposeComponent),
+    path: 'record',
+    loadComponent: () => import('./pages/record/record.component').then(m => m.RecordComponent)
+  },
+  {
+    path: 'broadcast/:url',
+    loadComponent: () => import('./pages/broadcast/broadcast.component').then(m => m.BroadcastComponent),
     canActivate: [BroadcastCreatorGuard]
   },
   {
-    path: ':url',
+    path: 'replay/:url',
+    loadComponent: () => import('./pages/replay/replay.component').then(m => m.ReplayComponent)
+  },
+  {
+    path: 'watch/:url',
     loadComponent: () => import('./pages/watch/watch.component').then(m => m.WatchComponent)
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];

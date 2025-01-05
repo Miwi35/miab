@@ -1,0 +1,34 @@
+<div class="page-container">
+  <ng-container *ngIf="!isRecordingEnded; else replayView">
+    <header>
+      <h1>{{ title }}</h1>
+      <div class="title-input-container" *ngIf="!isRecordingEnded">
+        <input 
+          type="text" 
+          class="title-input"
+          placeholder="Enter recording title (letters, numbers, hyphens only)"
+          [value]="recordingTitle"
+          (input)="onTitleChange($event)"
+        >
+      </div>
+    </header>
+
+    <app-recorder
+      [recordingKey]="recordingTitle"
+      [isDisabled]="!isTitleValid()"
+      (recordingEnded)="onRecordingEnded($event)"
+    ></app-recorder>
+  </ng-container>
+
+  <ng-template #replayView>
+    <main>
+      <app-replay-viewer [title]="recordingTitle"></app-replay-viewer>
+      <div class="actions">
+        <button class="download-btn" (click)="downloadRecording()">
+          <span class="icon">💾</span>
+          Download Recording
+        </button>
+      </div>
+    </main>
+  </ng-template>
+</div> 
