@@ -1,28 +1,35 @@
 <div class="page-container">
-  <header>
-    <h1>{{ title }}</h1>
-    <p class="broadcast-url" [class.error]="error">{{ statusText }}</p>
-  </header>
+  <main class="main-zone">
+    <header>
+      <h1>{{ title }}</h1>
+      <p class="broadcast-url" [class.error]="error">{{ statusText }}</p>
+    </header>
 
-  <main>
-    <div class="watch-area">
-      <div class="content-area">
-        <div class="message-content">
-          <span>{{ currentContent.substring(0, cursorPosition) }}</span>
-          <span class="cursor"></span>
-          <span>{{ currentContent.substring(cursorPosition) }}</span>
+      <section class="watch-area">
+        <div class="content-area">
+          <div class="message-content">
+            <span>{{ currentContent.substring(0, cursorPosition) }}</span>
+            <span class="cursor"></span>
+            <span>{{ currentContent.substring(cursorPosition) }}</span>
+          </div>
         </div>
-      </div>
 
-      <div class="actions">
-        <button class="leave-btn" (click)="leaveBroadcast()">
-          <span class="icon">🚪</span>
-          Leave Broadcast
-        </button>
-      </div>
-    </div>
+        <div class="actions">
+          <button class="leave-btn" (click)="leaveBroadcast()">
+            <span class="icon">🚪</span>
+            Leave Broadcast
+          </button>
+        </div>
+      </section>
   </main>
 
+  <aside class="sidebar">
+    <app-live-chat
+      [roomId]="broadcastKey"
+      *ngIf="isConnected"
+    ></app-live-chat>
+
+  </aside>
   <app-password-prompt
     *ngIf="showPasswordPrompt"
     (passwordSubmit)="onPasswordSubmit($event)"

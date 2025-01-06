@@ -5,11 +5,16 @@ import { Subscription } from 'rxjs';
 import { BroadcastService, KeystrokeData, ConnectionStatus } from '../../shared/services/broadcast.service';
 import { CryptoService } from '../../shared/services/crypto.service';
 import { PasswordPromptComponent } from './components/password-prompt/password-prompt.component';
+import { LiveChatComponent } from '../../shared/components/live-chat/live-chat.component';
 
 @Component({
   selector: 'app-watch',
   standalone: true,
-  imports: [CommonModule, PasswordPromptComponent],
+  imports: [
+    CommonModule, 
+    PasswordPromptComponent,
+    LiveChatComponent
+  ],
   templateUrl: './watch.component.html',
   styleUrls: ['../../shared/styles/layout/_container.scss', './watch.component.scss']
 })

@@ -6,11 +6,18 @@ import { BroadcastService, ConnectionStatus } from '../../shared/services/broadc
 import { RecorderComponent } from '../../shared/components/recorder/recorder.component';
 import { ReplayViewerComponent } from '../../shared/components/replay-viewer/replay-viewer.component';
 import { Subscription } from 'rxjs';
+import { LiveChatComponent } from '../../shared/components/live-chat/live-chat.component';
 
 @Component({
   selector: 'app-broadcast',
   standalone: true,
-  imports: [CommonModule, FormsModule, RecorderComponent, ReplayViewerComponent],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    RecorderComponent, 
+    ReplayViewerComponent,
+    LiveChatComponent
+  ],
   templateUrl: './broadcast.component.html',
   styleUrls: ['../../shared/styles/layout/_container.scss', './broadcast.component.scss']
 })

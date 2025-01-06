@@ -1,85 +1,124 @@
 @use '../../shared/styles/base/_variables' as v;
 @use 'sass:color';
 
+// Layout
 .page-container {
+  display: flex;
+  flex-direction: row;
+  gap: v.$spacing-md;
 
-  header {
-    text-align: center;
-    margin-bottom: 2rem;
+  // Main Zone
+  .main-zone {
+    flex: 1;
+    min-width: 800px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #e4e4e7, #a1a1aa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    header {
+      flex-shrink: 0;
+      text-align: center;
+      margin-bottom: v.$spacing-lg;
+  
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+  
+      .broadcast-url {
+        color: v.$text-secondary;
+        font-family: monospace;
+  
+        &.error {
+          color: v.$error-color;
+        }
+      }
     }
 
-    .broadcast-url {
-      color: #94a3b8;
-      font-family: monospace;
+    .watch-area {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: v.$bg-card;
+      backdrop-filter: blur(10px);
+      border: 1px solid v.$border-color;
+      border-radius: v.$border-radius-lg;
+      padding: v.$spacing-lg;
+      margin: 0;
+      max-width: v.$content-max-width;
+
+      // Content Area
+      .content-area {
+        margin-bottom: v.$spacing-lg;
+        flex: 1;
+        min-height: 300px;
+        max-height: 600px;
+
+        .message-content {
+          min-height: 300px;
+          white-space: pre-wrap;
+          font-family: v.$font-primary;
+          line-height: 1.6;
+          position: relative;
+
+          .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: v.$text-primary;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+          }
+        }
+      }
+
+      // Action Buttons
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: v.$spacing-sm;
+
+        .leave-btn {
+          display: flex;
+          align-items: center;
+          gap: v.$spacing-xs;
+          padding: v.$spacing-sm v.$spacing-md;
+          border-radius: v.$border-radius-md;
+          font-size: v.$font-size-base;
+          cursor: pointer;
+          transition: v.$transition-base;
+          background: linear-gradient(135deg, #475569, #334155);
+          color: white;
+          border: none;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          }
+
+          .icon {
+            font-size: 1.2em;
+          }
+        }
+      }
     }
   }
 
-  .watch-area {
-    max-width: 800px;
-    margin: 0 auto;
-
-    .content-area {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-
-      .message-display {
-        min-height: 200px;
-        white-space: pre-wrap;
-        font-family: 'Inter', sans-serif;
-        line-height: 1.6;
-
-        &.connecting {
-          color: #94a3b8;
-          font-style: italic;
-        }
-      }
-    }
-
-    .actions {
-      display: flex;
-      justify-content: center;
-
-      .leave-btn {
-        background: color.adjust(v.$error-color, $alpha: 0.1);
-        color: v.$error-color;
-        border: 1px solid color.adjust(v.$error-color, $alpha: 0.2);
-        padding: v.$spacing-sm v.$spacing-md;
-        border-radius: v.$border-radius-md;
-        font-size: v.$font-size-base;
-        cursor: pointer;
-        transition: v.$transition-base;
-        display: flex;
-        align-items: center;
-        gap: v.$spacing-xs;
-
-        .icon {
-          font-size: v.$font-size-lg;
-        }
-
-        &:hover {
-          background: color.adjust(v.$error-color, $alpha: 0.15);
-          transform: translateY(-1px);
-        }
-
-        &:active {
-          transform: translateY(0);
-        }
-      }
-    }
+  // Sidebar
+  .sidebar {
+    width: 350px;
+    flex-shrink: 0;
+    overflow: hidden;
   }
 }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+// Media Queries
 @media (max-width: 768px) {
   .page-container {
     padding: v.$spacing-sm;
@@ -88,26 +127,4 @@
   .watch-area .content-area {
     padding: v.$spacing-sm;
   }
-}
-
-.message-content {
-  min-height: 200px;
-  white-space: pre-wrap;
-  font-family: v.$font-primary;
-  line-height: 1.6;
-  position: relative;
-
-  .cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1.2em;
-    background-color: v.$text-primary;
-    vertical-align: text-bottom;
-    animation: blink 1s step-end infinite;
-  }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
 } 
