@@ -16,4 +16,9 @@ npm-debug.log*
 
 # System Files
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# SSL Certificates
+docker/ssl/*.key
+docker/ssl/*.crt
+docker/ssl/*.pem 

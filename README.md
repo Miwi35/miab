@@ -27,3 +27,35 @@ It distinguishes itself from other messaging apps by multiple criteria:
   - Webserver: nginx
   - Provisioned with ansible
   - Dockerized for easy deployment
+
+## Development Setup
+
+### SSL Configuration (Development)
+
+For local development with HTTPS:
+
+1. Generate self-signed SSL certificates:
+```bash
+# Create SSL directory
+mkdir -p docker/ssl
+
+# Generate self-signed certificate and private key
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout docker/ssl/nginx-selfsigned.key \
+  -out docker/ssl/nginx-selfsigned.crt \
+  -subj "/C=US/ST=CA/L=San Francisco/O=MIAB Dev/CN=localhost"
+```
+
+2. Add the following hosts to your `/etc/hosts` file:
+```
+127.0.0.1 miab.local
+127.0.0.1 server.miab.local
+```
+
+3. Access the application:
+   - Frontend: https://miab.local
+   - Backend: https://server.miab.local
+
+Notes: 
+- Since we're using a self-signed certificate in development, your browser will show a security warning. This is normal and expected. Click "Advanced" and "Proceed" to access the site. In production, you should use proper SSL certificates from a trusted certificate authority.
+- The SSL certificates are ignored by git and should not be committed. Each developer should generate their own certificates for local development.
